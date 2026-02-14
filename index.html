@@ -1,79 +1,106 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>❤️</title>
-  <style>
-    body{
-      margin:0;
-      overflow:hidden;
-      background: url("BATMANW.jpeg") no-repeat center center fixed;
-      background-size: cover;
-    }
-    canvas{ display:block; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>❤️</title>
 
-    h1{
-      margin: 20px 0 0;
-      text-align:center;
-      color:white;
-      text-shadow: 0 0 10px black;
-      font-family: Arial, sans-serif;
-      letter-spacing: 1px;
-    }
-  </style>
+<style>
+body{
+  margin:0;
+  overflow:hidden;
+  background: url("BATMANW.jpeg") no-repeat center center fixed;
+  background-size: cover;
+  font-family: Arial, sans-serif;
+}
+
+canvas{ display:block; }
+
+h1{
+  text-align:center;
+  color:white;
+  text-shadow:0 0 10px black;
+  margin-top:20px;
+}
+
+button{
+  position:absolute;
+  top:80px;
+  left:50%;
+  transform:translateX(-50%);
+  padding:10px 20px;
+  font-size:16px;
+  border:none;
+  border-radius:20px;
+  cursor:pointer;
+  background:#ff2d55;
+  color:white;
+  box-shadow:0 0 10px rgba(0,0,0,0.5);
+}
+
+button:hover{
+  background:#ff5c77;
+}
+</style>
 </head>
 
 <body>
-  <h1>YOU ARE MY VALENTINE MY REZA 💗</h1>
-  <canvas id="c"></canvas>
 
-  <script>
-    const c = document.getElementById("c");
-    const ctx = c.getContext("2d");
+<h1>YOU ARE MY VALENTINE MY REZA 💗</h1>
+<button onclick="makeBigger()">Make Heart Bigger ❤️</button>
 
-    function resize(){
-      c.width = innerWidth;
-      c.height = innerHeight;
-    }
-    resize();
-    addEventListener("resize", resize);
+<canvas id="c"></canvas>
 
-    let t = 0;
+<script>
+const c = document.getElementById("c");
+const ctx = c.getContext("2d");
 
-    function heart(t){
-      return {
-        x: 16 * Math.pow(Math.sin(t), 3),
-        y: 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t)
-      };
-    }
+function resize(){
+  c.width = innerWidth;
+  c.height = innerHeight;
+}
+resize();
+addEventListener("resize", resize);
 
-    const scale = 8;      // heart size (smaller -> 5, bigger -> 12)
-    const dotRadius = 1;  // dot size
+let t = 0;
+let scale = 8; // starting size
+const dotRadius = 1;
 
-    function draw(){
-      // Transparent canvas each frame so background image stays visible
-      ctx.clearRect(0, 0, c.width, c.height);
+function heart(t){
+  return {
+    x:16*Math.pow(Math.sin(t),3),
+    y:13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t)
+  };
+}
 
-      ctx.fillStyle = "#ff2d55"; // rose/pink heart color (change to "white" if you want)
-      for(let i = 0; i < 100; i++){
-        const p = heart(t + i * 0.1);
-        ctx.beginPath();
-        ctx.arc(
-          c.width/2 + p.x * scale,
-          c.height/2 - p.y * scale,
-          dotRadius,
-          0,
-          Math.PI * 2
-        );
-        ctx.fill();
-      }
+function makeBigger(){
+  scale += 2; // increase heart size each click
+}
 
-      t += 0.02;
-      requestAnimationFrame(draw);
-    }
+function draw(){
+  ctx.clearRect(0,0,c.width,c.height);
 
-    draw();
-  </script>
+  ctx.fillStyle = "#ff2d55";
+
+  for(let i=0;i<100;i++){
+    const p = heart(t + i*0.1);
+    ctx.beginPath();
+    ctx.arc(
+      c.width/2 + p.x * scale,
+      c.height/2 - p.y * scale,
+      dotRadius,
+      0,
+      Math.PI*2
+    );
+    ctx.fill();
+  }
+
+  t += 0.02;
+  requestAnimationFrame(draw);
+}
+
+draw();
+</script>
+
 </body>
 </html>
